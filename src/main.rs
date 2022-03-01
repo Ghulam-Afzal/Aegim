@@ -1,14 +1,22 @@
-use std::io; 
+use std::io::{self, Write}; 
 
 
 fn main() {
-    println!("Start");
+    
+    // main loop for the program 
+    loop {
 
-    let mut command = String::new(); 
+        print!("> ");
+        io::stdout().flush().unwrap();
 
-    io::stdin()
-        .read_line(&mut command)
-        .expect("Failed to read input"); 
+        let mut user_input  = String::new();
 
-    println!("> {}", command);
+        io::stdin().read_line(&mut user_input).unwrap();
+
+        let command = user_input.trim(); 
+
+        if command == "exit" {
+            break
+        }
+    }
 }

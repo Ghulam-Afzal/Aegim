@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "Aegim"
+name = "aegim"
 version = "0.1.0"
