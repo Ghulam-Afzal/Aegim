@@ -37,12 +37,13 @@ def check_pre_req_for_install(tool):
     _bool = which(tool) is not None
 
     if _bool is True: 
-        return f'{tool} is installed'
+        return 0
     else: 
-        return f'{tool} is not installed. Aborting instalation'
+        return 1 
         
 
 if __name__ == "__main__":
+
     # programs that need to be installed to run this program 
     pre_req_programs = ["git", "rustup"]
 
@@ -52,5 +53,12 @@ if __name__ == "__main__":
     # check if programs are installed
     for i in pre_req_programs: 
         _bool = check_pre_req_for_install(i)
-        print(_bool)
+
+        # exit the program if not otherwise check the next program
+        if _bool != 1: 
+            print(f"{i} is installed")
+
+        else: 
+            print(f"{i} is not installed and program will abort the installation")
+            exit()
 
