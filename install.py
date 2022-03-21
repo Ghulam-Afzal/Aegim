@@ -1,3 +1,5 @@
+# curl https://raw.githubusercontent.com/Ghulam-Afzal/Aegim/main/install.py  | python3 -
+
 from shutil import which
 import platform
 import sys 
