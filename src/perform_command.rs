@@ -11,6 +11,6 @@ pub fn perform_command(command: String, args: Vec<&str>) {
    let s_code = child.wait()
        .expect("Failed to wait on child process.");
 
-   // assert that the command succeded 
+   // assert that the command succeeded 
    assert!(s_code.success());
 }

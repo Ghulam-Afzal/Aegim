@@ -1,5 +1,5 @@
 // parse the command and split it into parts 
-pub fn seperate_command(command: &String) -> (String, Vec<&str>) {
+pub fn separate_command(command: &String) -> (String, Vec<&str>) {
 
     // split the array by whitespace and than collet into &str array
     let mut parts: Vec<&str> = command.trim().split_whitespace().collect();

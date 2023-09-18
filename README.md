@@ -4,7 +4,7 @@
 ## Features: 
 
 ### Implemented 
-- normal comamnds such as ex: ls, echo, touch
+- normal commands such as ex: ls, echo, touch
 - commands with args ex: ls -a, echo hello
 - keep command history
 
