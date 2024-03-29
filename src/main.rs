@@ -4,9 +4,6 @@ use std::fs::OpenOptions;
 use std::io::{self, Write};
 use std::path::Path;
 
-#[path = "helpers/print_type.rs"]
-mod print_type;
-
 mod helpers;
 mod perform_command;
 mod separate_command;
@@ -14,8 +11,9 @@ mod shell_commands;
 
 enum Command {
     Normal(String),
-    Exit,
     Cd(Vec<String>),
+    Exit,
+    Pwd,
 }
 
 impl Command {
@@ -23,6 +21,7 @@ impl Command {
         match command.trim().to_lowercase().as_str() {
             "exit" => Command::Exit,
             "cd" => Command::Cd(args.iter().map(|&s| s.to_string()).collect()),
+            "pwd" => Command::Pwd,
             other => Command::Normal(other.to_string()),
         }
     }
@@ -50,7 +49,7 @@ fn main() {
     };
 
     loop {
-        print!("{:?}: ", name);
+        print!("-> {}: ", name);
 
         io::stdout().flush().unwrap();
         let mut user_input = String::new();
@@ -72,6 +71,9 @@ fn main() {
             }
             Command::Cd(args) => {
                 shell_commands::cd::cd(args);
+            }
+            Command::Pwd => {
+                shell_commands::pwd::pwd();
             }
             Command::Normal(cmd) => perform_command::perform_command(cmd, args),
         }
