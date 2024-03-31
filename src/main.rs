@@ -4,28 +4,13 @@ use std::fs::OpenOptions;
 use std::io::{self, Write};
 use std::path::Path;
 
+mod command;
 mod helpers;
 mod perform_command;
 mod separate_command;
 mod shell_commands;
 
-enum Command {
-    Normal(String),
-    Cd(Vec<String>),
-    Exit,
-    Pwd,
-}
-
-impl Command {
-    fn from_str(command: &str, args: Vec<&str>) -> Self {
-        match command.trim().to_lowercase().as_str() {
-            "exit" => Command::Exit,
-            "cd" => Command::Cd(args.iter().map(|&s| s.to_string()).collect()),
-            "pwd" => Command::Pwd,
-            other => Command::Normal(other.to_string()),
-        }
-    }
-}
+use command::Command;
 
 fn main() {
     let mut command_history_file = OpenOptions::new()
