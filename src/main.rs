@@ -1,3 +1,4 @@
+use ansi_term::Colour::Red;
 use core::panic;
 use std::env;
 use std::fs::OpenOptions;
@@ -34,7 +35,7 @@ fn main() {
     };
 
     loop {
-        print!("-> {}: ", name);
+        print!("{}: ", Red.paint(name));
 
         io::stdout().flush().unwrap();
         let mut user_input = String::new();
