@@ -19,16 +19,7 @@ pub fn perform_command(command: String, args: Vec<&str>) {
 
     let buffer = io::BufReader::new(stdout);
 
-    if command == "cat" || command == "echo" {
-        for line in buffer.lines() {
-            if let Ok(line) = line {
-                print!("{}", line);
-            } else {
-                eprint!("Error reading output");
-                break;
-            }
-        }
-    } else {
+    if command == "ls" {
         for line in buffer.lines() {
             match line {
                 Ok(line) => {
@@ -41,6 +32,16 @@ pub fn perform_command(command: String, args: Vec<&str>) {
                 }
             }
         }
+        println!("");
+        return;
     }
-    print!("\n");
+
+    for line in buffer.lines() {
+        if let Ok(line) = line {
+            println!("{}", line);
+        } else {
+            eprint!("error reading input from child process stdio");
+            break;
+        }
+    }
 }
