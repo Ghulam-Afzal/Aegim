@@ -1,3 +1,4 @@
+use std::fs::{self, metadata};
 use std::{
     io::{self, BufRead},
     process::{Command, Stdio},
@@ -22,12 +23,17 @@ pub fn perform_command(command: String, args: Vec<&str>) {
     if command == "ls" {
         for line in buffer.lines() {
             match line {
-                Ok(line) => {
-                    let colored_line = colorize_output(line);
-                    print!("{} ", colored_line);
+                Ok(file) => {
+                    let metadata = fs::metadata(&file).expect("expected to get file meta data");
+                    if metadata.file_type().is_dir() {
+                        let colored_file = colorize_output(&file);
+                        print!("{} ", &colored_file);
+                    } else {
+                        print!("{} ", file);
+                    }
                 }
                 Err(err) => {
-                    eprint!("Error reading output: {}", err);
+                    eprintln!("Error reading output: {}", err);
                     break;
                 }
             }
@@ -40,7 +46,7 @@ pub fn perform_command(command: String, args: Vec<&str>) {
         if let Ok(line) = line {
             println!("{}", line);
         } else {
-            eprint!("error reading input from child process stdio");
+            eprintln!("error reading input from child process stdio");
             break;
         }
     }
