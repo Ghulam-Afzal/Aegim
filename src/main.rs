@@ -21,20 +21,20 @@ fn main() {
         .open("aegim_history.txt")
         .unwrap();
 
-    let cur_dir = env::current_dir().expect("could not get the current dir");
-    let path = Path::new(cur_dir.as_os_str());
-
-    let name;
-
-    match path.file_name() {
-        Some(n) => match n.to_str() {
-            Some(nme) => name = nme.trim_matches('"'),
-            None => panic!("unable to convert dir name to str"),
-        },
-        None => panic!("unable to get the currect directory"),
-    };
-
     loop {
+        let cur_dir = env::current_dir().expect("could not get the current dir");
+        let path = Path::new(cur_dir.as_os_str());
+
+        let name;
+
+        match path.file_name() {
+            Some(n) => match n.to_str() {
+                Some(nme) => name = nme.trim_matches('"'),
+                None => panic!("unable to convert dir name to str"),
+            },
+            None => panic!("unable to get the currect directory"),
+        };
+
         print!("{}: ", Red.paint(name));
 
         io::stdout().flush().unwrap();

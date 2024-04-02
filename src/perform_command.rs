@@ -1,4 +1,4 @@
-use std::fs::{self, metadata};
+use std::fs;
 use std::{
     io::{self, BufRead},
     process::{Command, Stdio},
