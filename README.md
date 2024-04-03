@@ -6,10 +6,8 @@
 ### Implemented 
 - normal commands such as ex: ls, echo, touch
 - commands with args ex: ls -a, echo hello
+- shell specific commands ex: cd, pwd
 - keep command history
+- piping(ex. ls | grep text)
+- colored output for ls commands
 
-### Need to be implemented
-- Piping
-- Color for print out to terminal
-- shell specific commands ex: cd
-- ability to go to a previous command

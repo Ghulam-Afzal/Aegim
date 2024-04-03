@@ -51,3 +51,32 @@ pub fn perform_command(command: String, args: Vec<&str>) {
         }
     }
 }
+
+pub fn perform_piped_command(command: String) {
+    let commands: Vec<&str> = command.trim().split("|").collect();
+
+    let mut previous_output = None;
+
+    for cmd in commands {
+        let mut parts = cmd.trim().split_whitespace();
+        let executable = parts.next().unwrap();
+        let args: Vec<&str> = parts.collect();
+
+        let mut child = Command::new(executable)
+            .args(&args)
+            .stdin(
+                previous_output
+                    .take()
+                    .map_or(Stdio::inherit(), |stdin| Stdio::from(stdin)),
+            )
+            .stdout(Stdio::piped())
+            .spawn()
+            .expect("failed to execute command");
+
+        previous_output = child.stdout.take();
+    }
+
+    if let Some(mut output) = previous_output {
+        io::copy(&mut output, &mut io::stdout()).expect("failed to copy output to stdout");
+    }
+}

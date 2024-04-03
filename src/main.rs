@@ -1,5 +1,4 @@
 use ansi_term::Colour::Red;
-use core::panic;
 use std::env;
 use std::fs::OpenOptions;
 use std::io::{self, Write};
@@ -25,14 +24,14 @@ fn main() {
         let cur_dir = env::current_dir().expect("could not get the current dir");
         let path = Path::new(cur_dir.as_os_str());
 
-        let name;
+        let mut name = "> ";
 
         match path.file_name() {
             Some(n) => match n.to_str() {
                 Some(nme) => name = nme.trim_matches('"'),
-                None => panic!("unable to convert dir name to str"),
+                None => eprintln!("unable to convert dir name to str"),
             },
-            None => panic!("unable to get the currect directory"),
+            None => eprintln!("unable to get the currect directory"),
         };
 
         print!("{}: ", Red.paint(name));
@@ -49,19 +48,24 @@ fn main() {
         };
 
         let command_string = command.to_string();
-        let (cmd, args) = separate_command::separate_command(&command_string);
 
-        match Command::from_str(cmd.clone().as_str(), args.clone()) {
-            Command::Exit => {
-                break;
+        if command_string.contains("|") {
+            perform_command::perform_piped_command(command_string);
+        } else {
+            let (cmd, args) = separate_command::separate_command(&command_string);
+
+            match Command::from_str(cmd.clone().as_str(), args.clone()) {
+                Command::Exit => {
+                    break;
+                }
+                Command::Cd(args) => {
+                    shell_commands::cd::cd(args);
+                }
+                Command::Pwd => {
+                    shell_commands::pwd::pwd();
+                }
+                Command::Normal(cmd) => perform_command::perform_command(cmd, args),
             }
-            Command::Cd(args) => {
-                shell_commands::cd::cd(args);
-            }
-            Command::Pwd => {
-                shell_commands::pwd::pwd();
-            }
-            Command::Normal(cmd) => perform_command::perform_command(cmd, args),
         }
     }
 }
